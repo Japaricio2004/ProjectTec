@@ -65,14 +65,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
           <!-- Logo -->
-          <a href="/" class="flex items-center space-x-3 group">
-            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-              </svg>
+          <div class="flex items-center space-x-3">
+            <div class="h-16 flex items-center justify-center">
+              <img src="{{ url_for('static', filename='img/ImageTec.png') }}" alt="JOSETEC Logo" class="h-full w-auto object-contain max-h-14">
             </div>
-            <span class="text-xl font-bold text-white">JOSETEC</span>
-          </a>
+          </div>
           
           <!-- User Menu -->
           <div class="flex items-center space-x-4">
@@ -116,12 +113,9 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-              </svg>
+            <div class="h-12 flex items-center justify-center">
+              <img src="{{ url_for('static', filename='img/ImageTec.png') }}" alt="JOSETEC Logo" class="h-full w-auto object-contain max-h-10">
             </div>
-            <span class="text-sm font-semibold text-white">JOSETEC</span>
           </div>
           <p class="text-sm text-white/60">© 2025 Sistema de Reparaciones. Todos los derechos reservados.</p>
         </div>

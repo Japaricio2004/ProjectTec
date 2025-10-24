@@ -114,7 +114,12 @@ def technician_dashboard():
         nueva = Orden(
             codigo=codigo,
             cliente=clientName,
+            cliente_telefono=clientPhone,  # Guardar teléfono
+            cliente_email=clientEmail,     # Guardar email
             dispositivo=f"{deviceType} {deviceBrand} {deviceModel}".strip(),
+            device_type=deviceType,        # Nuevos campos normalizados
+            device_brand=deviceBrand,
+            device_model=deviceModel,
             falla=reportedIssue,
             estado="RECIBIDO",
             fecha_creacion=datetime.utcnow()
@@ -126,13 +131,16 @@ def technician_dashboard():
 
     # Stats y listado
     ordenes = Orden.query.order_by(Orden.fecha_creacion.desc()).all()
-    # Adaptación simple: orders para plantilla espera trackingCode, etc. pero nuestra plantilla usa 'orders'
+    
+    # Pasar los datos COMPLETOS al template
     orders = [
         {
             'trackingCode': o.codigo,
-            'clientName': o.cliente,
-            'deviceBrand': o.dispositivo.split(' ')[1] if len(o.dispositivo.split(' '))>1 else o.dispositivo,
-            'deviceModel': ' '.join(o.dispositivo.split(' ')[2:]) if len(o.dispositivo.split(' '))>2 else '',
+            'cliente': o.cliente,
+            'cliente_telefono': o.cliente_telefono,
+            'cliente_email': o.cliente_email,
+            'deviceBrand': o.device_brand or o.dispositivo.split(' ')[1] if len(o.dispositivo.split(' '))>1 else o.dispositivo,
+            'deviceModel': o.device_model or ' '.join(o.dispositivo.split(' ')[2:]) if len(o.dispositivo.split(' '))>2 else '',
             'status': o.estado,
             'createdAt': o.fecha_creacion.strftime('%d/%m/%Y %H:%M') if o.fecha_creacion else ''
         } for o in ordenes
@@ -142,7 +150,22 @@ def technician_dashboard():
     code = request.args.get('code','')
     selected = None
     if active == 'update' and code:
-        selected = Orden.query.filter_by(codigo=code).first()
+        selected_order = Orden.query.filter_by(codigo=code).first()
+        if selected_order:
+            selected = {
+                'trackingCode': selected_order.codigo,
+                'cliente': selected_order.cliente,
+                'cliente_telefono': selected_order.cliente_telefono,
+                'cliente_email': selected_order.cliente_email,
+                'deviceBrand': selected_order.device_brand,
+                'deviceModel': selected_order.device_model,
+                'dispositivo': selected_order.dispositivo,
+                'reportedIssue': selected_order.falla,
+                'diagnosis': selected_order.diagnosis,
+                'requiredParts': selected_order.required_parts,
+                'repairCost': selected_order.repair_cost,
+                'status': selected_order.estado
+            }
 
     return render_template("TechnicianDashboard.html", user={'name': session.get('nombre','')}, orders=orders, selected=selected)
 
@@ -173,7 +196,12 @@ def ti_create_order():
     nueva = Orden(
         codigo=codigo,
         cliente=clientName,
+        cliente_telefono=clientPhone,
+        cliente_email=clientEmail,
         dispositivo=f"{deviceType} {deviceBrand} {deviceModel}".strip(),
+        device_type=deviceType,
+        device_brand=deviceBrand,
+        device_model=deviceModel,
         falla=reportedIssue,
         estado="RECIBIDO",
         fecha_creacion=datetime.utcnow()
@@ -189,14 +217,17 @@ def ti_update_order(trackingCode):
     if "rol" not in session or session.get("rol") != "tecnico":
         return redirect(url_for("login"))
     orden = Orden.query.filter_by(codigo=trackingCode).first_or_404()
-    diagnosis = request.form.get('diagnosis')
-    requiredParts = request.form.get('requiredParts')
-    repairCost = request.form.get('repairCost')
-    # Nuestro modelo no tiene estos campos; solo mover a estado de aprobación para que el flujo coincida
-    orden.estado = 'ESPERA DE APROBACIÓN'
+    
+    # Actualizar todos los campos
+    orden.estado = request.form.get('status', orden.estado)
+    orden.diagnosis = request.form.get('diagnosis', orden.diagnosis)
+    orden.required_parts = request.form.get('requiredParts', orden.required_parts)
+    orden.repair_cost = request.form.get('repairCost', orden.repair_cost)
+    orden.fecha_actualizacion = datetime.utcnow()
+    
     db.session.commit()
-    flash("✅ Orden actualizada (espera de aprobación)", 'success')
-    return redirect(url_for('technician_interface', tab='update', code=trackingCode))
+    flash("✅ Orden actualizada correctamente", 'success')
+    return redirect(url_for('technician_dashboard', tab='update', code=trackingCode))
 
 if __name__ == "__main__":
     app.run(debug=True)

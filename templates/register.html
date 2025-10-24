@@ -60,6 +60,9 @@
         {% endif %}
 
         <form method="POST" class="space-y-4">
+          <!-- CSRF Token - FORMA CORRECTA -->
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          
           <input type="hidden" name="rol" id="role-input" value="cliente">
           
           <!-- Nombre Input -->
