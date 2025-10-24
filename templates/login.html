@@ -28,27 +28,8 @@
       <!-- Form Section -->
       <div class="px-8 pb-8">
         
-        <!-- Role Tabs -->
-        <div class="mb-6">
-          <div class="grid grid-cols-2 gap-2 bg-white/5 rounded-lg p-1">
-            <button 
-              type="button"
-              onclick="setRole('client')"
-              id="tab-client"
-              class="py-2 px-4 rounded-md text-sm font-medium transition-all bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
-            >
-              Cliente
-            </button>
-            <button 
-              type="button"
-              onclick="setRole('technician')"
-              id="tab-technician"
-              class="py-2 px-4 rounded-md text-sm font-medium transition-all text-blue-200 hover:text-white"
-            >
-              Técnico
-            </button>
-          </div>
-        </div>
+        <!-- Role Tabs removed -->
+        <div class="mb-2"></div>
 
         {% if error %}
           <div class="bg-red-500/20 border border-red-500/30 text-red-100 p-4 rounded-lg mb-6 flex items-start">
@@ -60,8 +41,7 @@
         {% endif %}
 
         <form method="POST" class="space-y-4">
-          <input type="hidden" name="role" id="role-input" value="client">
-          
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <!-- Email Input -->
           <div class="space-y-2">
             <label for="correo" class="block text-sm font-medium text-white">
@@ -128,13 +108,7 @@
           </p>
         </div>
 
-        <!-- Demo Info (only for clients) -->
-        <div id="demo-info" class="mt-6 p-4 bg-blue-500/20 border border-blue-500/30 rounded-lg">
-          <p class="text-blue-100 text-sm">
-            💡 <span class="text-white font-medium">Demo:</span> Usa el código <span class="text-cyan-400 font-medium">DEMO1234</span> para ver una orden de ejemplo
-          </p>
-        </div>
-
+        
       </div>
     </div>
 
@@ -149,28 +123,4 @@
   }
 </style>
 
-<script>
-  function setRole(role) {
-    const clientTab = document.getElementById('tab-client');
-    const technicianTab = document.getElementById('tab-technician');
-    const roleInput = document.getElementById('role-input');
-    const demoInfo = document.getElementById('demo-info');
-    
-    roleInput.value = role;
-    
-    if (role === 'client') {
-      clientTab.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      clientTab.classList.remove('text-blue-200', 'hover:text-white');
-      technicianTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      technicianTab.classList.add('text-blue-200', 'hover:text-white');
-      demoInfo.style.display = 'block';
-    } else {
-      technicianTab.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      technicianTab.classList.remove('text-blue-200', 'hover:text-white');
-      clientTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      clientTab.classList.add('text-blue-200', 'hover:text-white');
-      demoInfo.style.display = 'none';
-    }
-  }
-</script>
 {% endblock %}
