@@ -31,7 +31,7 @@ git add .
 set FECHA=%date:~6,4%-%date:~3,2%-%date:~0,2%
 set HORA=%time:~0,2%:%time:~3,2%
 set HORA=%HORA: =0%
-git commit -m "Actualización automática %FECHA% %HORA%"
+git commit -m "Actualizacion automatica %FECHA% %HORA%"
 
 :: Subir cambios a GitHub
 git push -u origin main
