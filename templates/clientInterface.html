@@ -3,75 +3,151 @@
 
 {% block content %}
 <div class="min-h-screen p-4">
-  <div class="max-w-3xl mx-auto">
-    <div class="mb-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-6 {{ 'text-center' if not order else '' }}">
 
       <h1 class="text-2xl font-semibold text-white mb-2">Seguimiento de Reparación</h1>
       <p class="text-blue-200">Consulta el estado de tu dispositivo</p>
     </div>
 
-    <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 mb-6">
-      <div class="p-6 border-b border-white/20">
-        <h2 class="text-lg font-semibold text-white">Ingresa tu Código de Seguimiento</h2>
-        <p class="text-sm text-blue-200">El código fue proporcionado por el técnico al recibir tu dispositivo</p>
-      </div>
-      <div class="p-6">
-        <form method="GET" action="{{ url_for('client_interface') }}" class="space-y-4">
-          <div class="space-y-2">
-            <label for="trackingCode" class="block text-sm font-medium text-white">Código de Seguimiento</label>
-            <input
-              id="trackingCode"
-              name="code"
-              value="{{ request.args.get('code','') }}"
-              placeholder="Ej: A1B2C3D4"
-              class="uppercase block w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
+    <!-- Grid: centrado cuando no hay orden, dos columnas cuando sí hay -->
+    <div class="grid grid-cols-1 {{ 'lg:grid-cols-2' if order else '' }} gap-6 items-start">
+      <!-- Izquierda: Panel de Seguimiento / Búsqueda -->
+      <div class="order-1 lg:order-1 {{ '' if order else 'max-w-xl mx-auto w-full' }}">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="p-6 border-b border-white/20">
+            <h2 class="text-lg font-semibold text-white">Ingresa tu Código de Seguimiento</h2>
+            <p class="text-sm text-blue-200">El código fue proporcionado por el técnico al recibir tu dispositivo</p>
           </div>
+          <div class="p-6">
+            <form method="GET" action="{{ url_for('client_interface') }}" class="space-y-4">
+              <div class="space-y-2">
+                <label for="trackingCode" class="block text-sm font-medium text-white">Código de Seguimiento</label>
+                <input
+                  id="trackingCode"
+                  name="code"
+                  value="{{ request.args.get('code','') }}"
+                  placeholder="Ej: A1B2C3D4"
+                  class="uppercase block w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
 
-          {% if error %}
-          <div class="p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-200 text-sm">
-            {{ error }}
+              {% if error %}
+              <div class="p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-200 text-sm">
+                {{ error }}
+              </div>
+              {% endif %}
+
+              <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                Buscar Orden
+              </button>
+            </form>
           </div>
-          {% endif %}
+        </div>
+        {% if order %}
+        <!-- Tarjeta: Información de Contacto (debajo del buscador) -->
+        <div class="mt-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="p-6 border-b border-white/20">
+            <h3 class="text-lg font-semibold text-white">Información de Contacto</h3>
+          </div>
+          <div class="p-6 space-y-2 text-sm">
+            <div>
+              <p class="text-blue-200">Nombre:</p>
+              <p class="text-white">{{ order.cliente }}</p>
+            </div>
+            <div>
+              <p class="text-blue-200">Teléfono:</p>
+              <p class="text-white">{{ order.cliente_telefono }}</p>
+            </div>
+            <div>
+              <p class="text-blue-200">Email:</p>
+              <p class="text-white">{{ order.cliente_email }}</p>
+            </div>
+          </div>
+        </div>
 
-          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            Buscar Orden
-          </button>
-        </form>
+        <!-- Tarjeta: Técnico a cargo -->
+        <div class="mt-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="p-6 border-b border-white/20">
+            <h3 class="text-lg font-semibold text-white">Técnico a cargo</h3>
+          </div>
+          <div class="p-6 space-y-2 text-sm">
+            <div>
+              <p class="text-blue-200">Nombre del técnico:</p>
+              <p class="text-white">{{ order.technician_name or 'No asignado' }}</p>
+            </div>
+            {% if order.technician_email %}
+            <div>
+              <p class="text-blue-200">Correo del técnico:</p>
+              <p class="text-white">{{ order.technician_email }}</p>
+            </div>
+            {% endif %}
+            <div>
+              <p class="text-blue-200">Mensaje:</p>
+              <p class="text-white/90">{{ order.technician_note or 'El técnico asignado actualizará esta sección cuando tome el caso.' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Fechas de la Orden (u otro contenido útil) -->
+        <div class="mt-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+          <div class="p-6 border-b border-white/20">
+            <h3 class="text-lg font-semibold text-white">Fechas de la Orden</h3>
+          </div>
+          <div class="p-6 space-y-3 text-sm">
+            <div class="flex items-center justify-between">
+              <p class="text-blue-200">Creada:</p>
+              <p class="text-white">{{ order.fecha_creacion.strftime('%d/%m/%Y %H:%M') if order.fecha_creacion else '-' }}</p>
+            </div>
+            <div class="flex items-center justify-between">
+              <p class="text-blue-200">Última actualización:</p>
+              <p class="text-white">{{ order.fecha_actualizacion.strftime('%d/%m/%Y %H:%M') if order.fecha_actualizacion else '-' }}</p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
       </div>
-    </div>
 
-    {% if order %}
-    <div class="space-y-6">
-      <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-        <div class="p-6 border-b border-white/20">
+      <!-- Derecha: Panel de Estado/Detalles -->
+      {% if order %}
+      <div class="order-2 lg:order-2 space-y-6">
+      {% set status = order.status %}
+      {% set status_bg =
+          'bg-blue-500/20 text-blue-400 border-blue-500/30 from-blue-500/20 to-blue-600/20' if status == 'RECIBIDO' else
+          'bg-purple-500/20 text-purple-400 border-purple-500/30 from-purple-500/20 to-purple-600/20' if status == 'EN DIAGNÓSTICO' else
+          'bg-amber-500/20 text-amber-400 border-amber-500/30 from-amber-500/20 to-amber-600/20' if status == 'ESPERA DE APROBACIÓN' else
+          'bg-indigo-500/20 text-indigo-400 border-indigo-500/30 from-indigo-500/20 to-indigo-600/20' if status == 'EN REPARACIÓN' else
+          'bg-green-500/20 text-green-400 border-green-500/30 from-green-500/20 to-green-600/20' if status == 'REPARADO' else
+          'bg-gray-500/20 text-gray-400 border-gray-500/30 from-gray-500/20 to-gray-600/20' if status == 'ENTREGADO' else
+          'bg-gray-500/20 text-gray-400 border-gray-500/30 from-gray-500/20 to-gray-600/20' %}
+        <div class="backdrop-blur-sm rounded-xl border border-white/20">
+        <div class="p-6 border-b {{ status_bg }}">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-white">Estado de tu Reparación</h3>
-            {% set status = order.status %}
-            {% set status_bg =
-                'bg-blue-500/20 text-blue-400 border-blue-500/30' if status == 'RECIBIDO' else
-                'bg-amber-500/20 text-amber-400 border-amber-500/30' if status == 'ESPERA DE APROBACIÓN' else
-                'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' if status == 'EN REPARACIÓN' else
-                'bg-green-500/20 text-green-400 border-green-500/30' if status == 'COMPLETADO' else
-                'bg-gray-500/20 text-gray-400 border-gray-500/30' %}
+            <div>
+              <h3 class="text-lg font-semibold {{ status_bg | replace('/20', '') | replace('bg-', 'text-') | replace('/30', '') | replace('from-', '') | replace('to-', '') }}">Estado de tu Reparación</h3>
+              <p class="text-sm {{ status_bg | replace('/20', '') | replace('bg-', 'text-') | replace('/30', '') | replace('from-', '') | replace('to-', '') }}">Código: {{ order.trackingCode }}</p>
+            </div>
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border {{ status_bg }}">
               {% if status == 'RECIBIDO' %}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              {% elif status == 'EN DIAGNÓSTICO' %}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               {% elif status == 'ESPERA DE APROBACIÓN' %}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               {% elif status == 'EN REPARACIÓN' %}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              {% elif status == 'COMPLETADO' %}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+              {% elif status == 'REPARADO' %}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              {% elif status == 'ENTREGADO' %}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
               {% else %}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               {% endif %}
               <span>{{ status }}</span>
             </span>
           </div>
-          <p class="text-sm text-blue-200">Código: {{ order.trackingCode }}</p>
         </div>
         <div class="p-6 space-y-4">
           <div>
@@ -97,6 +173,85 @@
           <div>
             <h4 class="text-white mb-2 font-medium">Problema Reportado</h4>
             <p class="text-sm text-white bg-white/10 p-3 rounded-lg border border-white/20">{{ order.reportedIssue }}</p>
+          </div>
+
+          <!-- Estado del Servicio -->
+          <div class="h-px bg-white/20"></div>
+          <div class="space-y-4">
+            <h4 class="text-white mb-2 font-medium">Estado del Servicio</h4>
+            
+            <!-- Barra de Progreso -->
+            <div class="w-full bg-white/10 rounded-full h-2 mb-4">
+        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full transition-all duration-500"
+          style="width: {{ order.progress }}%;">
+              </div>
+            </div>
+
+            <!-- Timeline de Estados -->
+            <div class="space-y-4">
+              {% set estados = {
+                'RECIBIDO': 1,
+                'EN DIAGNÓSTICO': 2,
+                'ESPERA DE APROBACIÓN': 3,
+                'EN REPARACIÓN': 4,
+                'REPARADO': 5,
+                'ENTREGADO': 6
+              } %}
+              
+              {% set estados_info = [
+                ('RECIBIDO', 'Dispositivo Recibido', 'clipboard-check'),
+                ('EN DIAGNÓSTICO', 'En Diagnóstico', 'search'),
+                ('ESPERA DE APROBACIÓN', 'Esperando Aprobación', 'clock'),
+                ('EN REPARACIÓN', 'En Reparación', 'wrench'),
+                ('REPARADO', 'Reparación Completada', 'check-circle'),
+                ('ENTREGADO', 'Dispositivo Entregado', 'package')
+              ] %}
+
+              {% for estado, label, icon in estados_info %}
+                {% set is_active = estados[estado] <= estados.get(order.status, 0) %}
+                <div class="flex items-start gap-4">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center
+                      {% if is_active %}
+                        bg-gradient-to-r from-blue-500 to-cyan-500 text-white
+                      {% else %}
+                        bg-white/10 text-blue-300
+                      {% endif %}">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {% if icon == 'clipboard-check' %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                        {% elif icon == 'search' %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        {% elif icon == 'clock' %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        {% elif icon == 'wrench' %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        {% elif icon == 'check-circle' %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        {% else %}
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                        {% endif %}
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium {% if is_active %}text-white{% else %}text-blue-300{% endif %}">
+                      {{ label }}
+                    </p>
+                  </div>
+                  {% if is_active %}
+                    {% if order.status == estado %}
+                      <p class="text-xs text-green-300 px-2 py-1 rounded-full border border-green-500/30 bg-green-500/10">Estado actual</p>
+                    {% else %}
+                      <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
           </div>
 
           {% if order.diagnosis %}
@@ -135,29 +290,10 @@
           </div>
           {% endif %}
         </div>
-      </div>
 
-      <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-        <div class="p-6 border-b border-white/20">
-          <h3 class="text-lg font-semibold text-white">Información de Contacto</h3>
-        </div>
-        <div class="p-6 space-y-2 text-sm">
-          <div>
-            <p class="text-blue-200">Nombre:</p>
-            <p class="text-white">{{ order.cliente }}</p>
-          </div>
-          <div>
-            <p class="text-blue-200">Teléfono:</p>
-            <p class="text-white">{{ order.cliente_telefono }}</p>
-          </div>
-          <div>
-            <p class="text-blue-200">Email:</p>
-            <p class="text-white">{{ order.cliente_email }}</p>
-          </div>
-        </div>
       </div>
+      {% endif %}
     </div>
-    {% endif %}
   </div>
 </div>
 {% endblock %}
