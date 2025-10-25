@@ -31,7 +31,7 @@ class Orden(db.Model):
     tecnico_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
     tecnico = db.relationship('Usuario', foreign_keys=[tecnico_id])
     # Datos del dispositivo (compatibilidad + normalizado)
-    dispositivo = db.Column(db.String(200), nullable=False)  # Texto libre para mantener compatibilidad
+    dispositivo = db.Column(db.String(200), nullable=False)  
     device_type = db.Column(db.String(50))
     device_brand = db.Column(db.String(50))
     device_model = db.Column(db.String(100))
