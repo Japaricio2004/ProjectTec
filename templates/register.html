@@ -183,33 +183,4 @@
   </div>
 </div>
 
-<style>
-  /* Asegurar que los placeholders se vean correctamente */
-  input::placeholder {
-    color: rgb(191, 219, 254);
-    opacity: 0.7;
-  }
-</style>
-
-<script>
-  function setRole(role) {
-    const clientTab = document.getElementById('tab-client');
-    const technicianTab = document.getElementById('tab-technician');
-    const roleInput = document.getElementById('role-input');
-    
-    roleInput.value = role;
-    
-    if (role === 'cliente') {
-      clientTab.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      clientTab.classList.remove('text-blue-200', 'hover:text-white');
-      technicianTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      technicianTab.classList.add('text-blue-200', 'hover:text-white');
-    } else {
-      technicianTab.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      technicianTab.classList.remove('text-blue-200', 'hover:text-white');
-      clientTab.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-cyan-500', 'text-white');
-      clientTab.classList.add('text-blue-200', 'hover:text-white');
-    }
-  }
-</script>
 {% endblock %}

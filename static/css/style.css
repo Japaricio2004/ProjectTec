@@ -1,0 +1,87 @@
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* Clases de utilidad */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Estilos globales */
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Estilos para formularios */
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Forzar color de texto en inputs de login y registro */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea,
+select {
+  color: #ffffff !important;
+}
+
+/* Para formularios dentro de fondos oscuros (login/register) mantener texto blanco */
+.text-white input,
+.text-white textarea,
+.text-white select {
+  color: #ffffff !important;
+}
+
+/* Para formularios en fondos claros (dashboards) mantener texto oscuro */
+.bg-white input,
+.bg-white textarea,
+.bg-white select,
+input.text-gray-900,
+textarea.text-gray-900,
+select.text-gray-900 {
+  color: #111827 !important;
+}
+
+/* Asegurar que las opciones del select también sean visibles */
+option {
+  color: #111827;
+}
