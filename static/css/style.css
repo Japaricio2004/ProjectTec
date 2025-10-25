@@ -1,87 +1,264 @@
-/* Animaciones */
-@keyframes fadeIn {
-  from {
+    /* Animaciones */
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }
+
+    @keyframes blob {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+        transform: translate(0px, 0px) scale(1);
+    }
+    }
+
+    /* Clases de utilidad */
+    .fade-in {
+    animation: fadeIn 0.5s ease-out;
+    }
+
+    .animate-blob {
+    animation: blob 7s infinite;
+    }
+
+    .animation-delay-2000 {
+    animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+    animation-delay: 4s;
+    }
+
+    /* Animaciones para tarjetas (cards) */
+    @keyframes floatY {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+    }
+
+    @keyframes swayZ {
+    0% { transform: rotateZ(-2deg); }
+    100% { transform: rotateZ(2deg); }
+    }
+
+    @keyframes yaw3D {
+    0% { transform: rotateY(-6deg); }
+    100% { transform: rotateY(6deg); }
+    }
+
+    .card-animate {
+    transform-style: preserve-3d;
+    will-change: transform;
+    animation:
+        floatY 5.5s ease-in-out infinite alternate,
+        swayZ 7s ease-in-out infinite alternate,
+        yaw3D 10s ease-in-out infinite alternate;
+    }
+
+    .card-animate:hover {
+    transform: translateY(-6px) rotateZ(1deg) rotateY(4deg);
+    transition: transform 180ms ease;
+    }
+    @keyframes cardWobble {
+    0%   { transform: translateY(0) rotateZ(-0.8deg); }
+    20%  { transform: translateY(-6px) rotateZ(1deg); }
+    40%  { transform: translateY(-2px) rotateZ(-1.2deg); }
+    60%  { transform: translateY(-7px) rotateZ(1.2deg); }
+    80%  { transform: translateY(-3px) rotateZ(-0.6deg); }
+    100% { transform: translateY(0) rotateZ(0deg); }
+    }
+
+    .card-animate {
+    will-change: transform;
+    animation: cardWobble 6.5s ease-in-out infinite;
+    }
+
+    .card-animate:hover {
+    transform: translateY(-6px) rotateZ(1deg);
+    transition: transform 180ms ease;
+    }
+
+    .cards-animated > .card-animate:nth-child(2) { animation-delay: .4s; }
+    .cards-animated > .card-animate:nth-child(3) { animation-delay: .8s; }
+    .cards-animated > .card-animate:nth-child(4) { animation-delay: 1.2s; }
+
+    @media (prefers-reduced-motion: reduce) {
+    .card-animate { animation: none; }
+    }
+
+    body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    min-height: 100vh;
+    position: relative;
+    }
+
+    input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    textarea,
+    select {
+    color: #ffffff !important;
+    }
+
+    .text-white input,
+    .text-white textarea,
+    .text-white select {
+    color: #ffffff !important;
+    }
+
+    .bg-white input,
+    .bg-white textarea,
+    .bg-white select,
+    input.text-gray-900,
+    textarea.text-gray-900,
+    select.text-gray-900 {
+    color: #111827 !important;
+    }
+
+    option {
+    color: #111827;
+    }
+
+    /* Select con tema oscuro (para dashboard técnico) */
+    .select-dark {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .select-dark:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .select-dark option {
+    background-color: rgba(2, 6, 23, 0.95) !important;
+    color: #ffffff !important;
+    }
+
+
+    .select-dark::-ms-expand {
+    display: none;
+    }
+
+    .select-glass {
+    background-color: rgba(255, 255, 255, 0.10) !important; 
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .select-glass:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .select-glass option {
+    background-color: rgba(255, 255, 255, 0.12) !important; 
+    color: #ffffff !important;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    }
+
+    .select-glass::-ms-expand {
+    display: none;
+    }
+
+    .custom-select-trigger {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    }
+
+    .custom-select-menu {
+    background: transparent;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8px, #000 calc(100% - 8px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent, #000 8px, #000 calc(100% - 8px), transparent 100%);
+    position: absolute;
+    max-height: 0;
     opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
+    overflow: hidden; 
+    transition: max-height 220ms ease, opacity 160ms ease;
+    }
+
+    /* Al abrir, el menú entra al flujo y empuja el contenido hacia abajo */
+    [data-status-select].open .custom-select-menu {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
     opacity: 1;
-    transform: translateY(0);
-  }
-}
+    }
 
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
+    /* Fallback si no hay soporte de blur/backdrop-filter */
+    @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .custom-select-menu {
+        background: transparent; /* sin blur, mantener transparente */
+    }
+    }
 
-/* Clases de utilidad */
-.fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
+    /* Scrollbar suave en Chrome/Edge */
+    .custom-select-menu::-webkit-scrollbar {
+    width: 8px;
+    }
+    .custom-select-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    }
+    .custom-select-menu::-webkit-scrollbar-track {
+    background-color: transparent;
+    }
 
-.animate-blob {
-  animation: blob 7s infinite;
-}
+    /* Degradado extra con pseudo-elementos (fallback adicional) */
+    .custom-select-menu::before,
+    .custom-select-menu::after {
+    content: "";
+    position: sticky;
+    left: 0;
+    right: 0;
+    height: 14px;
+    pointer-events: none;
+    display: block;
+    }
 
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
+    .custom-select-menu::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0));
+    }
 
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
+    .custom-select-menu::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0));
+    }
 
-/* Estilos globales */
-body {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
-  min-height: 100vh;
-  position: relative;
-}
+    .custom-select-option {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    margin: 0 8px; /* deja ver el fondo en los laterales */
+    text-shadow: 0 1px 1px rgba(0,0,0,0.35);
+    }
 
-/* Estilos para formularios */
-input::placeholder {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
+    .custom-select-option[aria-selected="true"] {
+    background-color: rgba(255, 255, 255, 0.14);
+    }
 
-/* Forzar color de texto en inputs de login y registro */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"],
-textarea,
-select {
-  color: #ffffff !important;
-}
-
-/* Para formularios dentro de fondos oscuros (login/register) mantener texto blanco */
-.text-white input,
-.text-white textarea,
-.text-white select {
-  color: #ffffff !important;
-}
-
-/* Para formularios en fondos claros (dashboards) mantener texto oscuro */
-.bg-white input,
-.bg-white textarea,
-.bg-white select,
-input.text-gray-900,
-textarea.text-gray-900,
-select.text-gray-900 {
-  color: #111827 !important;
-}
-
-/* Asegurar que las opciones del select también sean visibles */
-option {
-  color: #111827;
-}
+    .custom-select-option:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    }

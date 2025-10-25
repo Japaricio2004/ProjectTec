@@ -207,11 +207,19 @@
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="space-y-2">
               <label class="text-sm font-medium text-white" for="status">Estado de la Orden</label>
-              <select id="status" name="status" class="w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                {% for s in ['RECIBIDO','EN DIAGNÓSTICO','ESPERA DE APROBACIÓN','EN REPARACIÓN','REPARADO','ENTREGADO'] %}
-                <option value="{{ s }}" {{ 'selected' if selected.status==s else '' }}>{{ s }}</option>
-                {% endfor %}
-              </select>
+              <!-- Custom Select (fondo tipo panel) -->
+              <div class="relative" data-status-select>
+                <input type="hidden" name="status" value="{{ selected.status }}">
+                <button type="button" class="w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent select-glass custom-select-trigger inline-flex items-center justify-between" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="current-status">{{ selected.status }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="custom-select-menu absolute left-0 right-0 mt-1 z-50 rounded-md border border-white/20 text-white shadow-xl max-h-60 overflow-auto hidden pt-2 pb-2 space-y-1" role="listbox">
+                  {% for s in ['RECIBIDO','EN DIAGNÓSTICO','ESPERA DE APROBACIÓN','EN REPARACIÓN','REPARADO','ENTREGADO'] %}
+                  <div class="custom-select-option w-full px-3 py-2 text-sm cursor-pointer" data-value="{{ s }}" role="option" aria-selected="{{ 'true' if selected.status==s else 'false' }}">{{ s }}</div>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
 
             <div class="space-y-2">
@@ -226,7 +234,7 @@
 
             <div class="space-y-2">
               <label class="text-sm font-medium text-white" for="repairCost">Costo de Reparación</label>
-              <input id="repairCost" name="repairCost" value="{{ selected.repairCost or '' }}" placeholder="€150.00" class="w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+              <input id="repairCost" name="repairCost" value="{{ selected.repairCost or '' }}" placeholder="S/150.00" class="w-full rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
 
             <button type="submit" class="w-full rounded-md px-4 py-2 text-white text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 inline-flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl">

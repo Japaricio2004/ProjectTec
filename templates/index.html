@@ -6,7 +6,7 @@
   
   <!-- Left Content -->
   <div class="space-y-8">
-    <h1 class="text-5xl md:text-6xl font-bold text-white leading-tight">
+    <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight">
       Reparación de Dispositivos con Seguimiento Total
     </h1>
     
@@ -22,22 +22,20 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
         </svg>
       </a>
-
-      </a>
     </div>
     
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-6 pt-8">
       <div>
-        <div class="text-3xl font-bold text-white mb-1">2.5k+</div>
+        <div class="text-3xl font-bold text-white mb-1">{{ stats.repairs_display if stats else '—' }}</div>
         <div class="text-sm text-blue-200">Reparaciones</div>
       </div>
       <div>
-        <div class="text-3xl font-bold text-white mb-1">98%</div>
+        <div class="text-3xl font-bold text-white mb-1">{{ stats.satisfaction_display if stats else '—' }}</div>
         <div class="text-sm text-blue-200">Satisfacción</div>
       </div>
       <div>
-        <div class="text-3xl font-bold text-white mb-1">24h</div>
+        <div class="text-3xl font-bold text-white mb-1">{{ stats.avg_time_display if stats else '—' }}</div>
         <div class="text-sm text-blue-200">Tiempo Promedio</div>
       </div>
     </div>
@@ -146,6 +144,76 @@
     <p class="text-sm text-blue-200">Servicio express disponible para urgencias</p>
   </div>
   
+</div>
+
+<div class="mt-10">
+  <div class="text-center mb-10">
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">¿Cómo funciona?</h2>
+    <p class="text-blue-100">En cuatro pasos simples, de ingreso a entrega</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 cards-animated">
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-full card-animate">
+      <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold mb-4">1</div>
+      <h3 class="text-white font-semibold mb-2">Visita nuestro local</h3>
+      <p class="text-sm text-blue-200">Nos visitas y muestras al técnico el problema de tu equipo; registramos tu ingreso.</p>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-full card-animate">
+      <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold mb-4">2</div>
+      <h3 class="text-white font-semibold mb-2">Recibe tu código</h3>
+      <p class="text-sm text-blue-200">El técnico te entrega un código único para seguir tu reparación.</p>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-full card-animate">
+      <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold mb-4">3</div>
+      <h3 class="text-white font-semibold mb-2">Consulta estado y precio</h3>
+      <p class="text-sm text-blue-200">Ingresa el código en “Rastrear Reparación” para ver avance y costo estimado.</p>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-full card-animate">
+      <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold mb-4">4</div>
+      <h3 class="text-white font-semibold mb-2">Aprueba y recibe</h3>
+      <p class="text-sm text-blue-200">Confirmas la reparación; te avisamos para entrega o envío.</p>
+    </div>
+  </div>
+</div>
+
+<div class="mt-16">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-white mb-2">Servicios populares</h2>
+    <p class="text-blue-100">Lo que más nos piden nuestros clientes</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 cards-animated">
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 card-animate">
+      <h3 class="text-lg font-semibold text-white mb-2">Smartphones</h3>
+      <ul class="text-sm text-blue-200 space-y-1 list-disc list-inside">
+        <li>Cambio de pantalla y batería</li>
+        <li>Conectores y cámaras</li>
+        <li>Recuperación de datos</li>
+      </ul>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 card-animate">
+      <h3 class="text-lg font-semibold text-white mb-2">Laptops</h3>
+      <ul class="text-sm text-blue-200 space-y-1 list-disc list-inside">
+        <li>Mantenimiento y limpieza</li>
+        <li>Reparación de placa y teclado</li>
+        <li>Actualización a SSD/RAM</li>
+      </ul>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 card-animate">
+      <h3 class="text-lg font-semibold text-white mb-2">Tablets</h3>
+      <ul class="text-sm text-blue-200 space-y-1 list-disc list-inside">
+        <li>Pantalla táctil</li>
+        <li>Conectividad y puertos</li>
+        <li>Batería y carga</li>
+      </ul>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6 card-animate">
+      <h3 class="text-lg font-semibold text-white mb-2">Consolas</h3>
+      <ul class="text-sm text-blue-200 space-y-1 list-disc list-inside">
+        <li>HDMI/Video</li>
+        <li>Lectores y ventilación</li>
+        <li>Almacenamiento</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

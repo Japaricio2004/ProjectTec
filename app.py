@@ -5,7 +5,7 @@ from models.models import db
 
 # Importar controladores
 from controller.auth_controller import index, register, login, logout
-from controller.client_controller import client_interface
+from controller.client_controller import client_interface, client_dashboard, cliente_buscar, cliente_valorar
 from controller.technician_controller import technician
 
 app = Flask(__name__)
@@ -24,15 +24,16 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 # Registrar rutas
-
-# Registrar rutas
 app.add_url_rule("/", view_func=index)
 app.add_url_rule("/register", view_func=register, methods=["GET", "POST"])
 app.add_url_rule("/login", view_func=login, methods=["GET", "POST"])
 app.add_url_rule("/logout", view_func=logout)
 
 # Rutas del cliente
-app.add_url_rule("/client", view_func=client_interface, methods=["GET"])
+app.add_url_rule("/client", view_func=client_interface, methods=["GET", "POST"])
+app.add_url_rule("/cliente", view_func=client_dashboard, methods=["GET"])
+app.add_url_rule("/cliente/buscar", view_func=cliente_buscar, methods=["POST"])
+app.add_url_rule("/cliente/valorar", view_func=cliente_valorar, methods=["POST"])
 
 # Registrar blueprint del técnico
 app.register_blueprint(technician)
